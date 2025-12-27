@@ -18,3 +18,13 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
+use EmailBlocklist\Helper;
+
+new DeleteUsersWithoutWooCommerceOrders();
+
+class DeleteUsersWithoutWooCommerceOrders
+{
+    public function __construct()
+    {
+    }
+}
