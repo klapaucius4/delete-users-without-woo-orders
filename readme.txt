@@ -6,7 +6,7 @@ Tested up to: 6.9
 Stable tag: 1.0.0
 License: GPLv2 or later
 
-The plugin short description...
+Very simple plugin thath allows you to delete WooCommerce users with no orders.
 
 == Description ==
 To be continued
