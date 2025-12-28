@@ -25,6 +25,7 @@ class DeleteUsersWithoutWooCommerceOrders
     public function __construct()
     {
         add_action('admin_menu', [$this, 'addCleanupCustomersPage']);
+        add_action('admin_enqueue_scripts', [$this, 'loadStyle']);
     }
 
     public function addCleanupCustomersPage(): void
@@ -110,5 +111,10 @@ class DeleteUsersWithoutWooCommerceOrders
         } else {
             echo '<p>No zero-order customers in this batch.</p>';
         }
+    }
+
+    public function loadStyle(): void
+    {
+        wp_enqueue_style('duwwo_style', plugin_dir_url(__FILE__) . 'assets/style.css', false, '1.0.0');
     }
 }
