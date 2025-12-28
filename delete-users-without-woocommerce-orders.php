@@ -27,7 +27,7 @@ class DeleteUsersWithoutWooCommerceOrders
         add_action('admin_menu', [$this, 'addCleanupCustomersPage']);
     }
 
-    public function addCleanupCustomersPage()
+    public function addCleanupCustomersPage(): void
     {
         add_users_page(
             'Cleanup Customers',
@@ -38,7 +38,7 @@ class DeleteUsersWithoutWooCommerceOrders
         );
     }
 
-    public function cleanupCustomersPage()
+    public function cleanupCustomersPage(): void
     {
         if (! current_user_can('manage_options')) {
             wp_die('Insufficient permissions');
