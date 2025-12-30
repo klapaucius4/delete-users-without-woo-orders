@@ -3,7 +3,7 @@
 /*
  * Plugin Name:       Delete Users Without WooCommerce Orders
  * Plugin URI:        https://wordpress.org/plugins/delete-users-without-woocommerce-orders/
- * Description:       -
+ * Description:       Simple and free plugin that allows you to delete WooCommerce users with no orders.
  * Version:           1.0.0
  * Requires at least: 5.2
  * Requires PHP:      7.4
