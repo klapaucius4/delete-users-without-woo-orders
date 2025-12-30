@@ -26,13 +26,14 @@ class DeleteUsersWithoutWooCommerceOrders
     {
         add_action('admin_menu', [$this, 'addCleanupCustomersPage']);
         add_action('admin_enqueue_scripts', [$this, 'loadStyle']);
+        add_filter('plugin_action_links', [$this, 'addPluginActionLinks'], 10, 2);
     }
 
     public function addCleanupCustomersPage(): void
     {
         add_users_page(
-            'Cleanup Customers',
-            'Cleanup Customers',
+            __('Cleanup customers', 'duwwo'),
+            __('Cleanup customers', 'duwwo'),
             'manage_options',
             'cleanup-customers',
             [$this, 'cleanupCustomersPage']
@@ -45,7 +46,7 @@ class DeleteUsersWithoutWooCommerceOrders
             wp_die('Insufficient permissions');
         }
 
-        echo '<div class="wrap"><h1>Cleanup Customers Page</h1></div>';
+        echo '<div class="wrap"><h1>' . __('Delete Users Without WooCommerce Orders', 'duwwo') . '</h1></div>';
         echo '<p>This page lists customers with 0 orders in small batches to prevent performance issues.</p>';
 
         $perPage = 100;
@@ -116,5 +117,22 @@ class DeleteUsersWithoutWooCommerceOrders
     public function loadStyle(): void
     {
         wp_enqueue_style('duwwo-style', plugin_dir_url(__FILE__) . 'assets/style.css', false, '1.0.0');
+    }
+
+    public function addPluginActionLinks(array $actions, string $pluginFile): array
+    {
+        static $plugin;
+
+        if (! isset($plugin)) {
+            $plugin = plugin_basename(__FILE__);
+        }
+
+        if ($plugin === $pluginFile) {
+            $settings = '<a href="' . esc_url(get_admin_url(null, 'users.php?page=cleanup-customers')) . '">' . __('Cleanup customers', 'duwwo') . '</a>';
+
+            $actions = array_merge(['settings' => $settings], $actions);
+        }
+
+        return $actions;
     }
 }
