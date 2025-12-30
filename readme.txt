@@ -4,6 +4,7 @@ Tags: delete users, without orders, woocommerce spam
 Requires at least: 5.2
 Tested up to: 6.9
 Stable tag: 1.0.0
+Requires PHP: 7.4
 License: GPLv2 or later
 
 Simple and free plugin that allows you to delete WooCommerce users with no orders.
