@@ -78,7 +78,7 @@ class DeleteUsersWithoutWooCommerceOrders
         echo '<p>Below is a list of WP users who have 0 WooCommerce orders.</p>';
 
         if (!empty($noOrdersCustomers)) {
-            echo '<div style="max-height: 400px; overflow-y: auto; margin-bottom: 20px; border: 1px solid #ccd0d4; padding: 10px; border-radius: 4px; background: #fff;">';
+            echo '<div class="duwwo-customers-container">';
 
             echo '<table class="widefat"><thead><tr><th>ID</th><th>Login</th><th>Email</th></tr></thead><tbody>';
 
@@ -93,7 +93,7 @@ class DeleteUsersWithoutWooCommerceOrders
             echo '</tbody></table>';
             echo '</div>';
 
-            echo '<form method="post" style="margin-top: 20px;">';
+            echo '<form method="post" class="duwwo-delete-form">';
             wp_nonce_field('duwwo_cleanup_action', 'duwwo_cleanup_nonce');
 
             echo '<p><input type="submit" class="button button-primary" name="duwwo_delete_batch" value="Delete This Batch" onclick="return confirm(\'Are you sure you want to delete all customers in this batch?\');"></p>';
