@@ -32,8 +32,8 @@ class DeleteUsersWithoutWooCommerceOrders
     public function addCleanupCustomersPage(): void
     {
         add_users_page(
-            __('Cleanup customers', 'duwwo'),
-            __('Cleanup customers', 'duwwo'),
+            esc_html__('Cleanup customers', 'duwwo'),
+            esc_html__('Cleanup customers', 'duwwo'),
             'manage_options',
             'cleanup-customers',
             [$this, 'cleanupCustomersPage']
@@ -43,11 +43,11 @@ class DeleteUsersWithoutWooCommerceOrders
     public function cleanupCustomersPage(): void
     {
         if (! current_user_can('manage_options')) {
-            wp_die('Insufficient permissions');
+            wp_die(esc_html__('Permission denied', 'duwwo'));
         }
 
-        echo '<div class="wrap"><h1>' . __('Delete Users Without WooCommerce Orders', 'duwwo') . '</h1></div>';
-        echo '<p>This page lists customers with 0 orders in small batches to prevent performance issues.</p>';
+        echo '<div class="wrap"><h1>' . esc_html__('Delete Users Without WooCommerce Orders', 'duwwo') . '</h1></div>';
+        echo '<p>' . esc_html__('This page lists customers with 0 orders in small batches to prevent performance issues.', 'duwwo') . '</p>';
 
         $perPage = 100;
         $paged = isset($_GET['paged']) ? max(1, intval($_GET['paged'])) : 1;
@@ -74,7 +74,8 @@ class DeleteUsersWithoutWooCommerceOrders
             }
         }
 
-        echo '<h2>Customers with No Orders (Batch ' . $paged . ')</h2>';
+        echo '<h2>' . sprintf(esc_html__('Customers with No Orders (Batch %d)', 'duwwo'), absint($paged)) . '</h2>';
+        echo '<p>Below is a list of WP users who have 0 WooCommerce orders.</p>';
 
         if (!empty($noOrdersCustomers)) {
             echo '<div style="max-height: 400px; overflow-y: auto; margin-bottom: 20px; border: 1px solid #ccd0d4; padding: 10px; border-radius: 4px; background: #fff;">';
@@ -128,7 +129,7 @@ class DeleteUsersWithoutWooCommerceOrders
         }
 
         if ($plugin === $pluginFile) {
-            $settings = '<a href="' . esc_url(get_admin_url(null, 'users.php?page=cleanup-customers')) . '">' . __('Cleanup customers', 'duwwo') . '</a>';
+            $settings = '<a href="' . esc_url(get_admin_url(null, 'users.php?page=cleanup-customers')) . '">' . esc_html__('Cleanup customers', 'duwwo') . '</a>';
 
             $actions = array_merge(['settings' => $settings], $actions);
         }
