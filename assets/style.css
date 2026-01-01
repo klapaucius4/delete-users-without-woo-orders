@@ -1,0 +1,14 @@
+.duwwo-customers-container {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    border: 1px solid #ccd0d4;
+    padding: 10px;
+    border-radius: 4px;
+    background: #fff;
+}
+
+.duwwo-delete-form {
+    margin-top: 20px;
+}
+
