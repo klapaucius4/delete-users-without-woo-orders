@@ -22,11 +22,21 @@ new DeleteUsersWithoutWooCommerceOrders();
 
 class DeleteUsersWithoutWooCommerceOrders
 {
+    private bool $deactivatedDueToWooCommerce = false;
+
     public function __construct()
     {
         add_action('admin_menu', [$this, 'addCleanupCustomersPage']);
         add_action('admin_enqueue_scripts', [$this, 'loadStyle']);
         add_filter('plugin_action_links', [$this, 'addPluginActionLinks'], 10, 2);
+        add_action('deactivated_plugin', [$this, 'maybeDeactivateSelfWhenWooCommerceDeactivated'], 10, 2);
+        add_action('admin_init', [$this, 'maybeDeactivateSelfIfWooCommerceMissing']);
+
+        if (! $this->isWooCommerceActive()) {
+            add_action('admin_notices', [$this, 'renderWooCommerceMissingNotice']);
+
+            return;
+        }
     }
 
     public function addCleanupCustomersPage(): void
@@ -44,6 +54,10 @@ class DeleteUsersWithoutWooCommerceOrders
     {
         if (! current_user_can('manage_options')) {
             wp_die(esc_html__('Permission denied', 'duwwo'));
+        }
+
+        if (! $this->isWooCommerceActive()) {
+            wp_die(esc_html__('WooCommerce is not active.', 'duwwo'));
         }
 
         echo '<div class="wrap"><h1>' . esc_html__('Delete Users Without WooCommerce Orders', 'duwwo') . '</h1></div>';
@@ -135,5 +149,110 @@ class DeleteUsersWithoutWooCommerceOrders
         }
 
         return $actions;
+    }
+
+    public function maybeDeactivateSelfWhenWooCommerceDeactivated(string $plugin, bool $networkDeactivating): void
+    {
+        if ($plugin === plugin_basename(__FILE__)) {
+            return;
+        }
+
+        if ($plugin !== 'woocommerce/woocommerce.php') {
+            return;
+        }
+
+        $this->deactivateSelf($networkDeactivating);
+    }
+
+    public function maybeDeactivateSelfIfWooCommerceMissing(): void
+    {
+        if (! is_admin() || wp_doing_ajax()) {
+            return;
+        }
+
+        if ($this->isWooCommerceActive()) {
+            return;
+        }
+
+        $this->deactivateSelf(false);
+    }
+
+    private function deactivateSelf(bool $networkWide): void
+    {
+        if (! current_user_can('activate_plugins')) {
+            return;
+        }
+
+        if (! function_exists('deactivate_plugins') || ! function_exists('is_plugin_active')) {
+            $pluginPhp = ABSPATH . 'wp-admin/includes/plugin.php';
+            if (file_exists($pluginPhp)) {
+                require_once $pluginPhp;
+            }
+        }
+
+        $thisPlugin = plugin_basename(__FILE__);
+
+        $isActive = false;
+        if ($networkWide && function_exists('is_plugin_active_for_network') && is_multisite()) {
+            $isActive = is_plugin_active_for_network($thisPlugin);
+        } elseif (function_exists('is_plugin_active')) {
+            $isActive = is_plugin_active($thisPlugin);
+        }
+
+        if (! $isActive) {
+            return;
+        }
+
+        if (function_exists('deactivate_plugins')) {
+            deactivate_plugins($thisPlugin, true, $networkWide);
+            $this->deactivatedDueToWooCommerce = true;
+            add_action('admin_notices', [$this, 'renderSelfDeactivatedNotice']);
+        }
+    }
+
+    public function renderSelfDeactivatedNotice(): void
+    {
+        if (! $this->deactivatedDueToWooCommerce) {
+            return;
+        }
+
+        echo '<div class="notice notice-warning"><p>' .
+            esc_html__('Delete Users Without WooCommerce Orders was deactivated because WooCommerce was deactivated.', 'duwwo') .
+            '</p></div>';
+    }
+
+    private function isWooCommerceActive(): bool
+    {
+        if (class_exists('WooCommerce')) {
+            return true;
+        }
+
+        if (! function_exists('is_plugin_active')) {
+            $pluginPhp = ABSPATH . 'wp-admin/includes/plugin.php';
+            if (file_exists($pluginPhp)) {
+                require_once $pluginPhp;
+            }
+        }
+
+        if (function_exists('is_plugin_active') && is_plugin_active('woocommerce/woocommerce.php')) {
+            return true;
+        }
+
+        if (function_exists('is_plugin_active_for_network') && is_multisite() && is_plugin_active_for_network('woocommerce/woocommerce.php')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function renderWooCommerceMissingNotice(): void
+    {
+        if (! current_user_can('activate_plugins')) {
+            return;
+        }
+
+        echo '<div class="notice notice-error"><p>' .
+            esc_html__('Delete Users Without WooCommerce Orders requires WooCommerce to be active.', 'duwwo') .
+            '</p></div>';
     }
 }
