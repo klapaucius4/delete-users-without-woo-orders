@@ -117,7 +117,7 @@ class DeleteUsersWithoutWooCommerceOrders
 
     public function loadStyle(): void
     {
-        wp_enqueue_style('duwwo-style', plugin_dir_url(__FILE__) . 'assets/style.css', false, '1.0.0');
+        wp_enqueue_style('duwwo-style', plugin_dir_url(__FILE__) . 'assets/style.css', [], '1.0.0');
     }
 
     public function addPluginActionLinks(array $actions, string $pluginFile): array
