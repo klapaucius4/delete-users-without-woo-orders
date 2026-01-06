@@ -96,7 +96,7 @@ class DeleteUsersWithoutWooCommerceOrders
         if (! empty($noOrdersCustomers)) {
             echo '<div class="duwwo-customers-container">';
 
-            echo '<table class="widefat"><thead><tr><th>Lp.</th><th>User ID</th><th>Login</th><th>Email</th></tr></thead><tbody>';
+            echo '<table class="widefat"><thead><tr><th>' . esc_html__('Lp.', 'duwwo') . '</th><th>' . esc_html__('User ID', 'duwwo') . '</th><th>' . esc_html__('Login', 'duwwo') . '</th><th>' . esc_html__('Email', 'duwwo') . '</th></tr></thead><tbody>';
 
             foreach ($noOrdersCustomers as $user) {
                 echo '<tr>
