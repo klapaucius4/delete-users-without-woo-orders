@@ -91,13 +91,16 @@ class DeleteUsersWithoutWooCommerceOrders
         echo '<h2>' . sprintf(esc_html__('Customers with No Orders (Batch %d)', 'duwwo'), absint($paged)) . '</h2>';
         echo '<p>Below is a list of WP users who have 0 WooCommerce orders.</p>';
 
+        $key = 1;
+
         if (! empty($noOrdersCustomers)) {
             echo '<div class="duwwo-customers-container">';
 
-            echo '<table class="widefat"><thead><tr><th>User ID</th><th>Login</th><th>Email</th></tr></thead><tbody>';
+            echo '<table class="widefat"><thead><tr><th>Lp.</th><th>User ID</th><th>Login</th><th>Email</th></tr></thead><tbody>';
 
             foreach ($noOrdersCustomers as $user) {
                 echo '<tr>
+                <td>' . esc_html($key++) . '</td>
                 <td>' . esc_html($user->ID). '</td>
                 <td>' . esc_html($user->user_login) . '</td>
                 <td>' . esc_html($user->user_email) . '</td>
