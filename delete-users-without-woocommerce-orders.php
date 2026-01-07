@@ -89,7 +89,7 @@ class DeleteUsersWithoutWooCommerceOrders
         }
 
         echo '<h2>' . sprintf(esc_html__('Customers with No Orders (Batch %d)', 'duwwo'), absint($paged)) . '</h2>';
-        echo '<p>Below is a list of WP users who have 0 WooCommerce orders.</p>';
+        echo '<p>' . esc_html__('Below is a list of WP users who have 0 WooCommerce orders.', 'duwwo') . '</p>';
 
         $key = 1;
 
@@ -124,11 +124,11 @@ class DeleteUsersWithoutWooCommerceOrders
                     wp_delete_user($user->ID);
                 }
 
-                echo '<div class="notice notice-success"><p>Batch deleted successfully!</p></div>';
+                echo '<div class="notice notice-success"><p>' . esc_html__('Batch deleted successfully!', 'duwwo') . '</p></div>';
             }
 
         } else {
-            echo '<p>No zero-order customers in this batch.</p>';
+            echo '<p>' . esc_html__('No zero-order customers in this batch.', 'duwwo') . '</p>';
         }
     }
 
@@ -188,6 +188,7 @@ class DeleteUsersWithoutWooCommerceOrders
 
         if (! function_exists('deactivate_plugins') || ! function_exists('is_plugin_active')) {
             $pluginPhp = ABSPATH . 'wp-admin/includes/plugin.php';
+
             if (file_exists($pluginPhp)) {
                 require_once $pluginPhp;
             }
@@ -219,9 +220,7 @@ class DeleteUsersWithoutWooCommerceOrders
             return;
         }
 
-        echo '<div class="notice notice-warning"><p>' .
-            esc_html__('Delete Users Without WooCommerce Orders was deactivated because WooCommerce was deactivated.', 'duwwo') .
-            '</p></div>';
+        echo '<div class="notice notice-warning"><p>' . esc_html__('Delete Users Without WooCommerce Orders was deactivated because WooCommerce was deactivated.', 'duwwo') . '</p></div>';
     }
 
     private function isWooCommerceActive(): bool
@@ -254,8 +253,6 @@ class DeleteUsersWithoutWooCommerceOrders
             return;
         }
 
-        echo '<div class="notice notice-error"><p>' .
-            esc_html__('Delete Users Without WooCommerce Orders requires WooCommerce to be active.', 'duwwo') .
-            '</p></div>';
+        echo '<div class="notice notice-error"><p>' . esc_html__('Delete Users Without WooCommerce Orders requires WooCommerce to be active.', 'duwwo') . '</p></div>';
     }
 }
