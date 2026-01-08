@@ -60,8 +60,59 @@ class DeleteUsersWithoutWooCommerceOrders
             wp_die(esc_html__('WooCommerce is not active.', 'duwwo'));
         }
 
+        if (isset($_POST['duwwo_delete_batch'])) {
+            check_admin_referer('duwwo_cleanup_action', 'duwwo_cleanup_nonce');
+
+            if (! current_user_can('delete_users')) {
+                wp_die(esc_html__('You do not have permission to delete users.', 'duwwo'));
+            }
+
+            $perPage = 100;
+            $paged = isset($_GET['paged']) ? max(1, intval($_GET['paged'])) : 1;
+            $offset = ($paged - 1) * $perPage;
+
+            $customerQuery = new WP_User_Query([
+                'role' => 'customer',
+                'fields' => ['ID', 'user_login', 'user_email'],
+                'number' => $perPage,
+                'offset' => $offset,
+            ]);
+
+            $customers = $customerQuery->get_results();
+            $deletedCount = 0;
+
+            foreach ($customers as $user) {
+                $orders = wc_get_orders([
+                    'customer_id' => $user->ID,
+                    'limit' => 1
+                ]);
+
+                if (empty($orders)) {
+                    wp_delete_user($user->ID);
+                    $deletedCount++;
+                }
+            }
+
+            $redirectUrl = add_query_arg(
+                [
+                    'page' => 'cleanup-customers',
+                    'paged' => $paged,
+                    'deleted' => $deletedCount
+                ],
+                admin_url('users.php')
+            );
+            wp_safe_redirect($redirectUrl);
+            exit;
+        }
+
         echo '<div class="wrap"><h1>' . esc_html__('Delete Users Without WooCommerce Orders', 'duwwo') . '</h1></div>';
         echo '<p>' . esc_html__('This page lists customers with 0 orders in small batches to prevent performance issues.', 'duwwo') . '</p>';
+
+        if (isset($_GET['deleted']) && intval($_GET['deleted']) > 0) {
+            echo '<div class="notice notice-success is-dismissible"><p>' . 
+                 sprintf(esc_html__('Successfully deleted %d customer(s)!', 'duwwo'), absint($_GET['deleted'])) . 
+                 '</p></div>';
+        }
 
         $perPage = 100;
         $paged = isset($_GET['paged']) ? max(1, intval($_GET['paged'])) : 1;
@@ -116,16 +167,6 @@ class DeleteUsersWithoutWooCommerceOrders
             echo '<p><input type="submit" class="button button-primary" name="duwwo_delete_batch" value="Delete This Batch" onclick="return confirm(\'Are you sure you want to delete all customers in this batch?\');"></p>';
 
             echo '</form>';
-
-            if (isset($_POST['duwwo_delete_batch'])) {
-                check_admin_referer('duwwo_cleanup_action', 'duwwo_cleanup_nonce');
-
-                foreach ($noOrdersCustomers as $user) {
-                    wp_delete_user($user->ID);
-                }
-
-                echo '<div class="notice notice-success"><p>' . esc_html__('Batch deleted successfully!', 'duwwo') . '</p></div>';
-            }
 
         } else {
             echo '<p>' . esc_html__('No zero-order customers in this batch.', 'duwwo') . '</p>';
