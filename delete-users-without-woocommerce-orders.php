@@ -67,15 +67,9 @@ class DeleteUsersWithoutWooCommerceOrders
                 wp_die(esc_html__('You do not have permission to delete users.', 'duwwo'));
             }
 
-            $perPage = 100;
-            $paged = isset($_GET['paged']) ? max(1, intval($_GET['paged'])) : 1;
-            $offset = ($paged - 1) * $perPage;
-
             $customerQuery = new WP_User_Query([
                 'role' => 'customer',
-                'fields' => ['ID', 'user_login', 'user_email'],
-                'number' => $perPage,
-                'offset' => $offset,
+                'fields' => ['ID', 'user_login', 'user_email']
             ]);
 
             $customers = $customerQuery->get_results();
@@ -96,7 +90,6 @@ class DeleteUsersWithoutWooCommerceOrders
             $redirectUrl = add_query_arg(
                 [
                     'page' => 'cleanup-customers',
-                    'paged' => $paged,
                     'deleted' => $deletedCount
                 ],
                 admin_url('users.php')
@@ -114,15 +107,9 @@ class DeleteUsersWithoutWooCommerceOrders
                  '</p></div>';
         }
 
-        $perPage = 100;
-        $paged = isset($_GET['paged']) ? max(1, intval($_GET['paged'])) : 1;
-        $offset = ($paged - 1) * $perPage;
-
         $customerQuery = new WP_User_Query([
             'role' => 'customer',
-            'fields' => ['ID', 'user_login', 'user_email'],
-            'number' => $perPage,
-            'offset' => $offset,
+            'fields' => ['ID', 'user_login', 'user_email']
         ]);
 
         $customers = $customerQuery->get_results();
@@ -139,7 +126,7 @@ class DeleteUsersWithoutWooCommerceOrders
             }
         }
 
-        echo '<h2>' . sprintf(esc_html__('Customers with No Orders (Batch %d)', 'duwwo'), absint($paged)) . '</h2>';
+        echo '<h2>' . esc_html__('Customers with No Orders', 'duwwo') . '</h2>';
         echo '<p>' . esc_html__('Below is a list of WP users who have 0 WooCommerce orders.', 'duwwo') . '</p>';
 
         $key = 1;
