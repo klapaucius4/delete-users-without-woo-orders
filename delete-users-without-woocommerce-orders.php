@@ -238,6 +238,7 @@ class DeleteUsersWithoutWooCommerceOrders
         $thisPlugin = plugin_basename(__FILE__);
 
         $isActive = false;
+
         if ($networkWide && function_exists('is_plugin_active_for_network') && is_multisite()) {
             $isActive = is_plugin_active_for_network($thisPlugin);
         } elseif (function_exists('is_plugin_active')) {
@@ -272,6 +273,7 @@ class DeleteUsersWithoutWooCommerceOrders
 
         if (! function_exists('is_plugin_active')) {
             $pluginPhp = ABSPATH . 'wp-admin/includes/plugin.php';
+
             if (file_exists($pluginPhp)) {
                 require_once $pluginPhp;
             }
