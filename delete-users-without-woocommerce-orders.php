@@ -102,9 +102,7 @@ class DeleteUsersWithoutWooCommerceOrders
         echo '<p>' . esc_html__('This page lists customers with 0 orders in small batches to prevent performance issues.', 'duwwo') . '</p>';
 
         if (isset($_GET['deleted']) && intval($_GET['deleted']) > 0) {
-            echo '<div class="notice notice-success is-dismissible"><p>' . 
-                 sprintf(esc_html__('Successfully deleted %d customer(s)!', 'duwwo'), absint($_GET['deleted'])) . 
-                 '</p></div>';
+            echo '<div class="notice notice-success is-dismissible"><p>' . sprintf(esc_html__('Successfully deleted %d customer(s)!', 'duwwo'), absint($_GET['deleted'])) .  '</p></div>';
         }
 
         $customerQuery = new WP_User_Query([
