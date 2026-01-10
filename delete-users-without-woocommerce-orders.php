@@ -147,6 +147,7 @@ class DeleteUsersWithoutWooCommerceOrders
             echo '</div>';
 
             echo '<form method="post" class="duwwo-delete-form">';
+
             wp_nonce_field('duwwo_cleanup_action', 'duwwo_cleanup_nonce');
 
             echo '<p><input type="submit" class="button button-primary" name="duwwo_delete_batch" value="Delete This Batch" onclick="return confirm(\'Are you sure you want to delete all customers in this batch?\');"></p>';
