@@ -76,12 +76,7 @@ class DeleteUsersWithoutWooCommerceOrders
             $deletedCount = 0;
 
             foreach ($customers as $user) {
-                $orders = wc_get_orders([
-                    'customer_id' => $user->ID,
-                    'limit' => 1
-                ]);
-
-                if (empty($orders)) {
+                if ($this->userHasNoOrders($user->ID)) {
                     wp_delete_user($user->ID);
                     $deletedCount++;
                 }
@@ -114,12 +109,7 @@ class DeleteUsersWithoutWooCommerceOrders
         $noOrdersCustomers = [];
 
         foreach ($customers as $user) {
-            $orders = wc_get_orders([
-                'customer_id' => $user->ID,
-                'limit' => 1
-            ]);
-
-            if (empty($orders)) {
+            if ($this->userHasNoOrders($user->ID)) {
                 $noOrdersCustomers[] = $user;
             }
         }
@@ -283,5 +273,15 @@ class DeleteUsersWithoutWooCommerceOrders
         }
 
         echo '<div class="notice notice-error"><p>' . esc_html__('Delete Users Without WooCommerce Orders requires WooCommerce to be active.', 'duwwo') . '</p></div>';
+    }
+
+    private function userHasNoOrders(int $userId): bool
+    {
+        $orders = wc_get_orders([
+            'customer_id' => $userId,
+            'limit' => 1
+        ]);
+
+        return empty($orders);
     }
 }
