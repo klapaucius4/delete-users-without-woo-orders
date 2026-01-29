@@ -18,13 +18,14 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
-new DeleteUsersWithoutWooCommerceOrders();
+DeleteUsersWithoutWooCommerceOrders::getInstance();
 
 class DeleteUsersWithoutWooCommerceOrders
 {
+    private static ?self $instance = null;
     private bool $deactivatedDueToWooCommerce = false;
 
-    public function __construct()
+    private function __construct()
     {
         add_action('admin_menu', [$this, 'addCleanupCustomersPage']);
         add_action('admin_enqueue_scripts', [$this, 'loadStyle']);
@@ -283,5 +284,24 @@ class DeleteUsersWithoutWooCommerceOrders
         ]);
 
         return empty($orders);
+    }
+
+    public static function getInstance(): self
+    {
+        if (self::$instance === null) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
+
+    private function __clone()
+    {
+        // Prevent cloning
+    }
+
+    public function __wakeup()
+    {
+        throw new \Exception('Cannot unserialize singleton');
     }
 }
