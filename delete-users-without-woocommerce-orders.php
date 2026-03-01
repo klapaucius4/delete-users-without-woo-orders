@@ -123,14 +123,17 @@ class DeleteUsersWithoutWooCommerceOrders
         if (! empty($noOrdersCustomers)) {
             echo '<div class="duwwo-customers-container">';
 
-            echo '<table class="widefat"><thead><tr><th>' . esc_html__('Lp.', 'duwwo') . '</th><th>' . esc_html__('User ID', 'duwwo') . '</th><th>' . esc_html__('Login', 'duwwo') . '</th><th>' . esc_html__('Email', 'duwwo') . '</th></tr></thead><tbody>';
+            echo '<table class="widefat"><thead><tr><th>' . esc_html__('Lp.', 'duwwo') . '</th><th>' . esc_html__('User ID', 'duwwo') . '</th><th>' . esc_html__('Login', 'duwwo') . '</th><th>' . esc_html__('Email', 'duwwo') . '</th><th>' . esc_html__('Role', 'duwwo') . '</th></tr></thead><tbody>';
 
             foreach ($noOrdersCustomers as $user) {
+                $userDeta = get_userdata($user->ID);
+
                 echo '<tr>
                 <td>' . esc_html($key++) . '</td>
                 <td>' . esc_html($user->ID). '</td>
                 <td>' . esc_html($user->user_login) . '</td>
                 <td>' . esc_html($user->user_email) . '</td>
+                <td>' . esc_html($userDeta->roles[0]) . '</td>
                 </tr>';
             }
 
