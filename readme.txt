@@ -2,7 +2,7 @@
 Contributors: klapaucius4
 Tags: delete users, without orders, woocommerce spam
 Requires at least: 5.2
-Tested up to: 6.9
+Tested up to: 6.9.1
 Stable tag: 1.0.0
 Requires PHP: 7.4
 License: GPLv2 or later
