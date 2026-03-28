@@ -68,10 +68,7 @@ class DeleteUsersWithoutWooCommerceOrders
                 wp_die(esc_html__('You do not have permission to delete users.', 'duwwo'));
             }
 
-            $customerQuery = new WP_User_Query([
-                'role' => 'customer',
-                'fields' => ['ID', 'user_login', 'user_email']
-            ]);
+            $customerQuery = new WP_User_Query($this->getCustomerUserQueryArgs());
 
             $customers = $customerQuery->get_results();
             $deletedCount = 0;
@@ -101,10 +98,7 @@ class DeleteUsersWithoutWooCommerceOrders
             echo '<div class="notice notice-success is-dismissible"><p>' . sprintf(esc_html__('Successfully deleted %d customer(s)!', 'duwwo'), absint($_GET['deleted'])) .  '</p></div>';
         }
 
-        $customerQuery = new WP_User_Query([
-            'role' => 'customer',
-            'fields' => ['ID', 'user_login', 'user_email']
-        ]);
+        $customerQuery = new WP_User_Query($this->getCustomerUserQueryArgs());
 
         $customers = $customerQuery->get_results();
         $noOrdersCustomers = [];
@@ -126,15 +120,21 @@ class DeleteUsersWithoutWooCommerceOrders
             echo '<table class="widefat"><thead><tr><th>' . esc_html__('Lp.', 'duwwo') . '</th><th>' . esc_html__('User ID', 'duwwo') . '</th><th>' . esc_html__('Login', 'duwwo') . '</th><th>' . esc_html__('Email', 'duwwo') . '</th><th>' . esc_html__('Register date', 'duwwo') . '</th><th>' . esc_html__('Role', 'duwwo') . '</th></tr></thead><tbody>';
 
             foreach ($noOrdersCustomers as $user) {
-                $userDeta = get_userdata($user->ID);
+                $userData = get_userdata($user->ID);
+                $roleSlug = $userData->roles[0] ?? '';
+                $role = $roleSlug ? wp_roles()->get_role($roleSlug) : null;
+                $roleLabel = $role ? $role->name : $roleSlug;
+                $registered = $userData->user_registered
+                    ? mysql2date(get_option('date_format'), $userData->user_registered)
+                    : '';
 
                 echo '<tr>
                 <td>' . esc_html($key++) . '</td>
                 <td>' . esc_html($user->ID). '</td>
                 <td>' . esc_html($user->user_login) . '</td>
                 <td>' . esc_html($user->user_email) . '</td>
-                <td>' . esc_html($userDeta->user_registered) . '</td>
-                <td>' . esc_html($userDeta->roles[0]) . '</td>
+                <td>' . esc_html($registered) . '</td>
+                <td>' . esc_html($roleLabel) . '</td>
                 </tr>';
             }
 
@@ -154,8 +154,12 @@ class DeleteUsersWithoutWooCommerceOrders
         }
     }
 
-    public function loadStyle(): void
+    public function loadStyle(string $hookSuffix): void
     {
+        if ($hookSuffix !== 'users_page_cleanup-customers') {
+            return;
+        }
+
         wp_enqueue_style('duwwo-style', plugin_dir_url(__FILE__) . 'assets/style.css', [], '1.0.0');
     }
 
@@ -278,6 +282,14 @@ class DeleteUsersWithoutWooCommerceOrders
         }
 
         echo '<div class="notice notice-error"><p>' . esc_html__('Delete Users Without WooCommerce Orders requires WooCommerce to be active.', 'duwwo') . '</p></div>';
+    }
+
+    private function getCustomerUserQueryArgs(): array
+    {
+        return [
+            'role' => 'customer',
+            'fields' => ['ID', 'user_login', 'user_email'],
+        ];
     }
 
     private function userHasNoOrders(int $userId): bool
