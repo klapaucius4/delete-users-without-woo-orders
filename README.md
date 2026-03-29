@@ -1,6 +1,6 @@
 # Delete Users Without WooCommerce Orders
 
-**Easily delete users without any WooCommerce orders. Cleanup inactive accounts and remove unused customers from your store. Simple and free plugin.**
+**Easily delete users without any WooCommerce orders. Clean up inactive accounts and remove unused customers from your store. Simple and free plugin.**
 
 ---
 

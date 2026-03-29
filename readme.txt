@@ -8,7 +8,7 @@ Requires PHP: 7.4
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Easily delete users without any WooCommerce orders. Cleanup inactive accounts and remove unused customers from your store. Simple and free plugin.
+Easily delete users without any WooCommerce orders. Clean up inactive accounts and remove unused customers from your store. Simple and free plugin.
 
 == Description ==
 
