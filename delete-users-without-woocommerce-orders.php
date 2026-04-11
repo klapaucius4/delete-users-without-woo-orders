@@ -61,7 +61,7 @@ class DeleteUsersWithoutWooCommerceOrders
             wp_die(esc_html__('WooCommerce is not active.', 'duwwo'));
         }
 
-        if (isset($_POST['duwwo_delete_batch'])) {
+        if (isset($_POST['duwwo_delete'])) {
             check_admin_referer('duwwo_cleanup_action', 'duwwo_cleanup_nonce');
 
             if (! current_user_can('delete_users')) {
@@ -92,10 +92,10 @@ class DeleteUsersWithoutWooCommerceOrders
         }
 
         echo '<div class="wrap"><h1>' . esc_html__('Delete Users Without WooCommerce Orders', 'duwwo') . '</h1></div>';
-        echo '<p>' . esc_html__('This page lists customers with 0 orders in small batches to prevent performance issues.', 'duwwo') . '</p>';
+        echo '<p>' . esc_html__('This page lists customers who have no WooCommerce orders. You can delete all listed users after confirming.', 'duwwo') . '</p>';
 
         if (isset($_GET['deleted']) && intval($_GET['deleted']) > 0) {
-            echo '<div class="notice notice-success is-dismissible"><p>' . sprintf(esc_html__('Successfully deleted %d customer(s)!', 'duwwo'), absint($_GET['deleted'])) .  '</p></div>';
+            echo '<div class="notice notice-success is-dismissible"><p>' . sprintf(esc_html__('Successfully deleted %d customer(s)!', 'duwwo'), absint($_GET['deleted'])) . '</p></div>';
         }
 
         $customerQuery = new WP_User_Query($this->getCustomerUserQueryArgs());
@@ -145,13 +145,13 @@ class DeleteUsersWithoutWooCommerceOrders
 
             wp_nonce_field('duwwo_cleanup_action', 'duwwo_cleanup_nonce');
 
-            $confirmDelete = esc_js(__('Are you sure you want to delete all customers in this batch?', 'duwwo'));
-            echo '<p><input type="submit" class="button button-primary" name="duwwo_delete_batch" value="' . esc_attr__('Delete This Batch', 'duwwo') . '" onclick="return confirm(\'' . $confirmDelete . '\');"></p>';
+            $confirmDelete = esc_js(__('Are you sure you want to permanently delete all customers listed below? This cannot be undone.', 'duwwo'));
+            echo '<p><input type="submit" class="button button-primary" name="duwwo_delete" value="' . esc_attr__('Delete all listed customers', 'duwwo') . '" onclick="return confirm(\'' . $confirmDelete . '\');"></p>';
 
             echo '</form>';
 
         } else {
-            echo '<p>' . esc_html__('No zero-order customers in this batch.', 'duwwo') . '</p>';
+            echo '<p>' . esc_html__('No customers without WooCommerce orders were found.', 'duwwo') . '</p>';
         }
     }
 
