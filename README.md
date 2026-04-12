@@ -41,8 +41,3 @@ This plugin is designed to be as simple as possible - just install, activate, an
 2. Activate the plugin through the 'Plugins' screen in WordPress.
 3. Make sure WooCommerce is installed and activated.
 4. Navigate to Users → Cleanup customers to start managing your customer database.
-
-## Changelog
-
-### 1.0.0
-* First version
