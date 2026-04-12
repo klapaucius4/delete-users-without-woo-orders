@@ -2,7 +2,7 @@
 Contributors: klapaucius4
 Tags: delete users, without orders, woocommerce spam
 Requires at least: 5.2
-Tested up to: 6.9.1
+Tested up to: 6.9
 Stable tag: 1.0.0
 Requires PHP: 7.4
 License: GPLv2 or later
@@ -39,6 +39,14 @@ Whether you're managing a small WooCommerce store or a large e-commerce platform
 
 This plugin is designed to be as simple as possible - just install, activate, and use it to clean up your WooCommerce user database. No complicated settings, no premium features, just a straightforward tool that does exactly what it says: helps you delete users without WooCommerce orders.
 
+== Installation ==
+
+1. Upload the plugin files to the `/wp-content/plugins/delete-users-without-woocommerce-orders` directory, or install the plugin through the WordPress plugins screen directly.
+2. Activate the plugin through the 'Plugins' screen in WordPress.
+3. Make sure WooCommerce is installed and activated.
+4. Navigate to Users → Cleanup customers to start managing your customer database.
+
 == Changelog ==
+
 = 1.0.0 =
-First version
+* First version
