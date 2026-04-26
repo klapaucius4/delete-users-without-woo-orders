@@ -1,4 +1,4 @@
-# Delete Users Without WooCommerce Orders
+# Delete Users Without Woo Orders
 
 **Easily delete users without any WooCommerce orders. Clean up inactive accounts and remove unused customers from your store. Simple and free plugin.**
 
@@ -10,7 +10,7 @@ For any WooCommerce store owner or merchant, maintaining a clean and organized c
 
 Over time, your WordPress user database can become filled with spam registrations, fake accounts, test users, and customers who signed up but never completed a purchase. These inactive users and users without orders not only clutter your database but also consume valuable server resources, potentially affecting your site's speed and database performance.
 
-**Delete Users Without WooCommerce Orders** provides a straightforward, powerful, and completely free solution for cleaning up your WooCommerce user database. This simple WordPress plugin allows you to easily identify and remove all WordPress users who have never placed any WooCommerce orders, helping you maintain a clean, organized, and optimized customer database.
+**Delete Users Without Woo Orders** provides a straightforward, powerful, and completely free solution for cleaning up your WooCommerce user database. This simple WordPress plugin allows you to easily identify and remove all WordPress users who have never placed any WooCommerce orders, helping you maintain a clean, organized, and optimized customer database.
 
 ### Key Features
 
@@ -37,7 +37,7 @@ This plugin is designed to be as simple as possible - just install, activate, an
 
 ## Installation
 
-1. Upload the plugin files to the `/wp-content/plugins/delete-users-without-woocommerce-orders` directory, or install the plugin through the WordPress plugins screen directly.
+1. Upload the plugin files to the `/wp-content/plugins/delete-users-without-woo-orders` directory, or install the plugin through the WordPress plugins screen directly.
 2. Activate the plugin through the 'Plugins' screen in WordPress.
 3. Make sure WooCommerce is installed and activated.
 4. Navigate to Users → Cleanup customers to start managing your customer database.

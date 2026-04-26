@@ -1,8 +1,8 @@
 <?php
 
 /*
- * Plugin Name:       Delete Users Without WooCommerce Orders
- * Plugin URI:        https://wordpress.org/plugins/delete-users-without-woocommerce-orders/
+ * Plugin Name:       Delete Users Without Woo Orders
+ * Plugin URI:        https://wordpress.org/plugins/delete-users-without-woo-orders/
  * Description:       Simple and free plugin that allows you to delete WooCommerce users with no orders.
  * Version:           1.0.0
  * Requires at least: 5.2
@@ -11,7 +11,7 @@
  * Author URI:        https://michalkowalik.pl
  * License:           GPL v2 or later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
- * Text Domain:       delete-users-without-woocommerce-orders
+ * Text Domain:       delete-users-without-woo-orders
  */
 
 if (! defined('ABSPATH')) {
@@ -91,7 +91,7 @@ class DeleteUsersWithoutWooCommerceOrders
             exit;
         }
 
-        echo '<div class="wrap"><h1>' . esc_html__('Delete Users Without WooCommerce Orders', 'duwwo') . '</h1></div>';
+        echo '<div class="wrap"><h1>' . esc_html__('Delete Users Without Woo Orders', 'duwwo') . '</h1></div>';
         echo '<p>' . esc_html__('This page lists customers who have no WooCommerce orders. You can delete all listed users after confirming.', 'duwwo') . '</p>';
 
         if (isset($_GET['deleted']) && intval($_GET['deleted']) > 0) {
@@ -248,7 +248,7 @@ class DeleteUsersWithoutWooCommerceOrders
             return;
         }
 
-        echo '<div class="notice notice-warning"><p>' . esc_html__('Delete Users Without WooCommerce Orders was deactivated because WooCommerce was deactivated.', 'duwwo') . '</p></div>';
+        echo '<div class="notice notice-warning"><p>' . esc_html__('Delete Users Without Woo Orders was deactivated because WooCommerce was deactivated.', 'duwwo') . '</p></div>';
     }
 
     private function isWooCommerceActive(): bool
@@ -282,7 +282,7 @@ class DeleteUsersWithoutWooCommerceOrders
             return;
         }
 
-        echo '<div class="notice notice-error"><p>' . esc_html__('Delete Users Without WooCommerce Orders requires WooCommerce to be active.', 'duwwo') . '</p></div>';
+        echo '<div class="notice notice-error"><p>' . esc_html__('Delete Users Without Woo Orders requires WooCommerce to be active.', 'duwwo') . '</p></div>';
     }
 
     private function getCustomerUserQueryArgs(): array
